@@ -1,0 +1,51 @@
+﻿<UserControl x:Class="Fcog.Controls.Wpf.Forms.WpfRecogForm"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:questions="clr-namespace:Fcog.Controls.Wpf.Forms.Questions"
+             xmlns:forms="clr-namespace:Fcog.Controls.Wpf.Forms"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300" Name="This">
+
+    <UserControl.Resources>
+        <forms:WorkModeCreateToVisibleConverter x:Key="WorkModeCreateToVisibleConverter"/>
+    </UserControl.Resources>
+
+        <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+            
+        <ScrollViewer Grid.Column="0" VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Visible" >
+            <Canvas Name="ImageCanvas" ></Canvas>
+        </ScrollViewer>
+       
+        <GridSplitter Grid.Column="1" Width="3" VerticalAlignment="Stretch" HorizontalAlignment="Center"  ShowsPreview="True"></GridSplitter>
+
+        <Grid Grid.Column="2" Name="GridQuestionControls" Visibility="Collapsed"  >
+
+            <Grid.RowDefinitions>
+                     <RowDefinition Height="Auto"/>
+                     <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+            
+            <questions:AddQuestionControl x:Name="AddQuestionButton" Grid.Row="0" RecogForm="{Binding ElementName=This, Path=RecognitionForm }"  Visibility="{Binding ElementName=This, Path=RecognitionForm.RecogTools.WorkMode, Converter={StaticResource WorkModeCreateToVisibleConverter}}"/>
+               
+            <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Visible">
+                    <StackPanel >
+                    <ItemsControl ItemsSource="{Binding ElementName=This, Path=QuestionControls, Mode=TwoWay}" >
+                        <ItemsControl.ItemContainerStyle>
+                            <Style>
+                                <Setter Property="FrameworkElement.Margin" Value="0,5,0,5"/>
+                            </Style>
+                        </ItemsControl.ItemContainerStyle>
+                    </ItemsControl>
+                </StackPanel>
+                </ScrollViewer>
+            </Grid>
+     
+    </Grid>
+</UserControl>

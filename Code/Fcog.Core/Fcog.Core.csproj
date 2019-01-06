@@ -1,0 +1,204 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{7B6341E4-256E-4BDC-B64F-A9368AE064AE}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Fcog.Core</RootNamespace>
+    <AssemblyName>Fcog.Core</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\DEBUG\Core\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\RELEASE\Core\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Accord, Version=3.8.0.0, Culture=neutral, PublicKeyToken=fa1a88e29555ccf7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Accord.3.8.0\lib\net45\Accord.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Accord.Imaging, Version=3.8.0.0, Culture=neutral, PublicKeyToken=fa1a88e29555ccf7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Accord.Imaging.3.8.0\lib\net45\Accord.Imaging.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Accord.Math, Version=3.8.0.0, Culture=neutral, PublicKeyToken=fa1a88e29555ccf7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Accord.Math.3.8.0\lib\net45\Accord.Math.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Accord.Math.Core, Version=3.8.0.0, Culture=neutral, PublicKeyToken=fa1a88e29555ccf7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Accord.Math.3.8.0\lib\net45\Accord.Math.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Accord.Statistics, Version=3.8.0.0, Culture=neutral, PublicKeyToken=fa1a88e29555ccf7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Accord.Statistics.3.8.0\lib\net45\Accord.Statistics.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="ConvNetSharp.Core">
+      <HintPath>..\packages\Cognitio.ConvNetSharp.Core.0.4.11-alpha\lib\net45\ConvNetSharp.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="ConvNetSharp.Volume">
+      <HintPath>..\packages\Cognitio.ConvNetSharp.Volume.0.4.11-alpha\lib\net45\ConvNetSharp.Volume.dll</HintPath>
+    </Reference>
+    <Reference Include="PresentationFramework" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.IO.Abstractions, Version=2.0.0.118, Culture=neutral, PublicKeyToken=d480b5b72fb413da, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IO.Abstractions.2.0.0.118\lib\net40\System.IO.Abstractions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+    <Reference Include="zxing, Version=0.16.4.0, Culture=neutral, PublicKeyToken=4e88037ac681fe60, processorArchitecture=MSIL">
+      <HintPath>..\packages\ZXing.Net.0.16.4\lib\net45\zxing.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="zxing.presentation, Version=0.16.4.0, Culture=neutral, PublicKeyToken=4e88037ac681fe60, processorArchitecture=MSIL">
+      <HintPath>..\packages\ZXing.Net.0.16.4\lib\net45\zxing.presentation.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Forms\Cells\CellEventArgs.cs" />
+    <Compile Include="Forms\QModel.cs" />
+    <Compile Include="Forms\QRecog.cs" />
+    <Compile Include="Forms\QVersion.cs" />
+    <Compile Include="Forms\WorkMode.cs" />
+    <Compile Include="IO\Templates\Readers\TemplateFileReader.cs" />
+    <Compile Include="Recognition\Character.cs" />
+    <Compile Include="Recognition\CircularBuffer.cs" />
+    <Compile Include="Recognition\RecogMachinesPool.cs" />
+    <Compile Include="Recognition\TrainersFactory.cs" />
+    <Compile Include="Recognition\TrainerType.cs" />
+    <Compile Include="Recognition\TrainResult.cs" />
+    <Compile Include="Serialization\Recognition\CharacterWrapper.cs" />
+    <Compile Include="Recognition\DataSet.cs" />
+    <Compile Include="Recognition\DataSetPair.cs" />
+    <Compile Include="Recognition\DataSets.cs" />
+    <Compile Include="Recognition\IRecogMachinesStore.cs" />
+    <Compile Include="Recognition\RecogMachine.cs" />
+    <Compile Include="Recognition\RecogMachinesFileStore.cs" />
+    <Compile Include="Serialization\Recognition\RecogMachineWrapper.cs" />
+    <Compile Include="Recognition\TrainBatch.cs" />
+    <Compile Include="Serialization\BarCodeMarkerWrapper.cs" />
+    <Compile Include="Serialization\Cells\CellWrapper.cs" />
+    <Compile Include="Serialization\Cells\CheckCellWrapper.cs" />
+    <Compile Include="Serialization\Cells\LetterCellWrapper.cs" />
+    <Compile Include="Serialization\Cells\RadioCellWrapper.cs" />
+    <Compile Include="Serialization\Cells\TextCellWrapper.cs" />
+    <Compile Include="Serialization\IWrapped.cs" />
+    <Compile Include="Serialization\QModelWrapper.cs" />
+    <Compile Include="IO\Templates\Readers\ITemplateReader.cs" />
+    <Compile Include="IO\ReadResult.cs" />
+    <Compile Include="Forms\Questions\IWritableQuestion.cs" />
+    <Compile Include="Serialization\Questions\MarkQuestionWrapper.cs" />
+    <Compile Include="Serialization\Questions\MultiQuestionWrapper.cs" />
+    <Compile Include="Serialization\Questions\QuestionWrapper.cs" />
+    <Compile Include="Serialization\Questions\RecogTextQuestionWrapper.cs" />
+    <Compile Include="Serialization\Questions\SingleQuestionWrapper.cs" />
+    <Compile Include="Serialization\Questions\TextQuestionWrapper.cs" />
+    <Compile Include="Serialization\RecogFormWrapper.cs" />
+    <Compile Include="IO\Templates\Writers\TemplateFileWriter.cs" />
+    <Compile Include="IO\WriteResult.cs" />
+    <Compile Include="IO\Templates\Writers\ITemplateWriter.cs" />
+    <Compile Include="Barcodes\BarCode.cs" />
+    <Compile Include="Forms\Cells\CheckCell.cs" />
+    <Compile Include="Forms\Cells\Content\CellContent.cs" />
+    <Compile Include="Forms\Cells\Content\TextView.cs" />
+    <Compile Include="Forms\Cells\Content\TextViews.cs" />
+    <Compile Include="Forms\Cells\Cell.cs" />
+    <Compile Include="Forms\Cells\LetterCell.cs" />
+    <Compile Include="Forms\Cells\MarkerDistance.cs" />
+    <Compile Include="Forms\Cells\RadioCell.cs" />
+    <Compile Include="Forms\Cells\TextCell.cs" />
+    <Compile Include="Forms\IRecognizable.cs" />
+    <Compile Include="Forms\Questions\QuestionEventArgs.cs" />
+    <Compile Include="Serialization\RecogToolsWrapper.cs" />
+    <Compile Include="Forms\RecogTools.cs" />
+    <Compile Include="Forms\Questionnaire.cs" />
+    <Compile Include="Forms\QuestionnareProperties.cs" />
+    <Compile Include="Forms\Questions\MarkQuestion.cs" />
+    <Compile Include="Forms\Questions\Question.cs" />
+    <Compile Include="Forms\Questions\MultiQuestion.cs" />
+    <Compile Include="Forms\Questions\QuestionsDictionary.cs" />
+    <Compile Include="Forms\Questions\RecogTextQuestion.cs" />
+    <Compile Include="Forms\Questions\SingleQuestion.cs" />
+    <Compile Include="Forms\Questions\TextQuestion.cs" />
+    <Compile Include="Forms\RecogForm.cs" />
+    <Compile Include="Forms\RecogFormProperties.cs" />
+    <Compile Include="Localization\CoreUI.ru-RU.Designer.cs">
+      <DependentUpon>CoreUI.ru-RU.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Localization\CoreUI.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CoreUI.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Annotations.cs" />
+    <Compile Include="Serialization\IUnWrapped.cs" />
+    <Compile Include="Recognition\FormRecognizeException.cs" />
+    <Compile Include="Math\Geometry.cs" />
+    <Compile Include="Barcodes\BarCodeMarker.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Localization\CoreUI.ru-RU.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>CoreUI.ru-RU.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Localization\CoreUI.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>CoreUI.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Settings\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\packages\Accord.3.8.0\build\Accord.targets" Condition="Exists('..\packages\Accord.3.8.0\build\Accord.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>Данный проект ссылается на пакеты NuGet, отсутствующие на этом компьютере. Используйте восстановление пакетов NuGet, чтобы скачать их.  Дополнительную информацию см. по адресу: http://go.microsoft.com/fwlink/?LinkID=322105. Отсутствует следующий файл: {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Accord.3.8.0\build\Accord.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Accord.3.8.0\build\Accord.targets'))" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

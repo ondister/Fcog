@@ -1,0 +1,72 @@
+{
+  "Characters": [
+    {
+      "Index": 0,
+      "TextView": {
+        "Text": "0"
+      }
+    },
+    {
+      "Index": 1,
+      "TextView": {
+        "Text": "1"
+      }
+    },
+    {
+      "Index": 2,
+      "TextView": {
+        "Text": "2"
+      }
+    },
+    {
+      "Index": 3,
+      "TextView": {
+        "Text": "3"
+      }
+    },
+    {
+      "Index": 4,
+      "TextView": {
+        "Text": "4"
+      }
+    },
+    {
+      "Index": 5,
+      "TextView": {
+        "Text": "5"
+      }
+    },
+    {
+      "Index": 6,
+      "TextView": {
+        "Text": "6"
+      }
+    },
+    {
+      "Index": 7,
+      "TextView": {
+        "Text": "7"
+      }
+    },
+    {
+      "Index": 8,
+      "TextView": {
+        "Text": "8"
+      }
+    },
+    {
+      "Index": 9,
+      "TextView": {
+        "Text": "9"
+      }
+    }
+  ],
+  "Id": "09c2f6b6-9db7-4afe-a1d4-64ce1156e3ba",
+  "Name": "Mnist machine",
+  "TrainResult": {
+    "EpochsCount": 100,
+    "Loss": 0.13225672986636072,
+    "TestAccuracy": 83,
+    "TrainAccuracy": 88
+  }
+}

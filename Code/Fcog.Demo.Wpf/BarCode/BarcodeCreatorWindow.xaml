@@ -1,0 +1,38 @@
+﻿<mah:MetroWindow  x:Class="Fcog.Demo.Wpf.BarCode.BarcodeCreatorWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Fcog.Demo.Wpf.BarCode"
+        xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+        mc:Ignorable="d"
+        Title="BarcodeCreatorWindow" SizeToContent="WidthAndHeight" ResizeMode="NoResize" Height="Auto" Width="Auto" WindowStartupLocation="CenterOwner"
+        Name="This">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <GroupBox Header="Questionnaire settings">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Label Grid.Row="0" Grid.Column="0" >10 digits of Id</Label>
+                <TextBox Grid.Row="0" Grid.Column="1" Name="TextBoxId" MinWidth="100" MaxLength="10"  Text="{Binding ElementName=This,Path=Id}" ></TextBox>
+
+
+                <Label Grid.Row="1" Grid.Column="0">Number of forms</Label>
+                <TextBox Grid.Row="1" Grid.Column="1" Name="TextBoxFormsNumber" MaxLength="2" Text="{Binding ElementName=This,Path=FormsNumber}" ></TextBox>
+
+            </Grid>
+        </GroupBox>
+        <Button Grid.Row="1" Name="Buttoncreate" Click="Buttoncreate_OnClick">Create</Button>
+    </Grid>
+</mah:MetroWindow>

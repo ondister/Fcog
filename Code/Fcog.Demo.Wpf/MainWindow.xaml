@@ -1,0 +1,34 @@
+﻿<mah:MetroWindow x:Class="Fcog.Demo.Wpf.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+        mc:Ignorable="d"
+        Title="Fcog Demo" Height="200" Width="700" WindowStartupLocation="CenterScreen"
+        GlowBrush="{DynamicResource AccentColorBrush}"
+         ResizeMode="NoResize" Loaded="MainWindow_OnLoaded">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <mah:MetroProgressBar Name="ProgressBar" IsIndeterminate="True"  Visibility="Collapsed" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4"/>
+
+        <Button Grid.Column="0" Grid.Row="1" Margin="2" Name="ButtonCreateBarCode" Click="ButtonCreateBarCode_OnClick">1. Create Form BarCode</Button>
+        <Button Grid.Column="1" Grid.Row="1" Margin="2" Name="ButtonTrainRecogs" Click="ButtonTrainRecogs_OnClick">2. Train Recognizers</Button>
+        <Button Grid.Column="2" Grid.Row="1" Margin="2" Name="ButtonCreateQuestionnaire" Click="ButtonCreateQuestionnaire_OnClick">3. Create new Questionnaire</Button>
+        <Button Grid.Column="3" Grid.Row="1" Margin="2" Name="ButtonRecognizequestionnaire" Click="ButtonRecognizequestionnaire_OnClick">4. Recognize Questionnaire</Button>
+    </Grid>
+</mah:MetroWindow>
+
+
+

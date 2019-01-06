@@ -1,0 +1,70 @@
+﻿<UserControl x:Class="Fcog.Controls.Wpf.Forms.Questions.AddQuestionControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+             xmlns:loc="clr-namespace:Fcog.Controls.Wpf.Localization"
+             xmlns:questions="clr-namespace:Fcog.Controls.Wpf.Forms.Questions"
+             xmlns:wpf="clr-namespace:Fcog.Controls.Wpf"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300" Name="This" >
+    <UserControl.Resources>
+        <wpf:NullToVisibilityConverter x:Key="NullToVisibilityConverter"/>
+    </UserControl.Resources>
+
+    
+    
+   
+        <Expander Name="QuestionAddExpander" Header="{x:Static loc:UI.NewQuestionSign}">
+       <Grid>
+
+           <Grid.RowDefinitions>
+               <RowDefinition Height="Auto"/>
+               <RowDefinition Height="*"/>
+           </Grid.RowDefinitions>
+
+
+           <Grid Name="GridAddContent"  Grid.Row="1" >
+               <Grid.ColumnDefinitions>
+                   <ColumnDefinition Width="Auto"/>
+                   <ColumnDefinition Width="*"/>
+               </Grid.ColumnDefinitions>
+
+               <Grid.RowDefinitions>
+                   <RowDefinition Height="Auto"/>
+                   <RowDefinition Height="Auto"/>
+                   <RowDefinition Height="Auto"/>
+                   <RowDefinition Height="Auto"/>
+                   <RowDefinition Height="*"/>
+                   <RowDefinition Height="Auto"/>
+               </Grid.RowDefinitions>
+               <GroupBox Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Header="{x:Static loc:UI.QuestionTypeSign}">
+                        <ListBox Margin="2"  Name="ListQuestionTypes"  ItemsSource="{Binding ElementName=This, Path=QuestionTypeDictionary}"  SelectedValue ="{Binding ElementName=This, Path=SelectedQuestionType}"  SelectedValuePath="Key" d:DataContext="{d:DesignData Type}">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                        <StackPanel>
+                                            <TextBlock Text="{Binding Path=Value}" />
+                                        </StackPanel>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                    </GroupBox>
+
+                <Label Grid.Row="1" Grid.Column="0" Content="{x:Static loc:UI.IndexSing}"  Visibility="{Binding ElementName=ListQuestionTypes, Path=SelectedItem, Converter={StaticResource NullToVisibilityConverter}}"  />
+                <TextBox Margin="2" Grid.Row="1" Grid.Column="1" Name="TextBoxIndex" Visibility="{Binding ElementName=ListQuestionTypes, Path=SelectedItem, Converter={StaticResource NullToVisibilityConverter}}"  Text="{Binding ElementName=This, Path=QuestionIndex}" />
+
+                <Label Grid.Row="2" Grid.Column="0" Content="{x:Static loc:UI.LabelSing}" Visibility="{Binding ElementName=ListQuestionTypes, Path=SelectedItem, Converter={StaticResource NullToVisibilityConverter}}"   />
+                <TextBox Margin="2" Grid.Row="2" Grid.Column="1" Name="TextBoxLabel" Visibility="{Binding ElementName=ListQuestionTypes, Path=SelectedItem, Converter={StaticResource NullToVisibilityConverter}}" Text="{Binding ElementName=This, Path=QuestionLabel}"/>
+
+                <Label Grid.Row="3" Grid.Column="0" Content="{x:Static loc:UI.LanguageSing}" Visibility="{Binding ElementName=ListQuestionTypes, Path=SelectedItem, Converter={StaticResource NullToVisibilityConverter}}"  />
+                <ComboBox Margin="2" Grid.Row="3" Grid.Column="1" Name="ComboBoxLanguage"  Visibility="{Binding ElementName=ListQuestionTypes, Path=SelectedItem, Converter={StaticResource NullToVisibilityConverter}}" ItemsSource="{Binding ElementName=This, Path=MachineCollection}" SelectedValue ="{Binding ElementName=This, Path=SelectedMachine}"/>
+
+
+               <Button Name="ButtonOk" Grid.Row="5" Content="{x:Static loc:UI.AddSing}" Click="ButtonOk_OnClick"  Grid.Column="0" Grid.ColumnSpan="2"></Button>
+           </Grid>
+
+       </Grid>
+        </Expander>    
+        
+</UserControl>
