@@ -269,7 +269,7 @@ namespace Fcog.Core.Recognition
                 {
                     writer.Write(ReverseBytes(0x00000801));//magic number 
                     writer.Write(ReverseBytes(dataSet.Count));//number of images 
-                    writer.Write(ReverseBytes(DataSet.ImageWeight));//number of rows 
+                    writer.Write(ReverseBytes(DataSet.ImageWidth));//number of rows 
                     writer.Write(ReverseBytes(DataSet.ImageHeight));//number of columns 
                     //data
                     foreach (var pair in dataSet.DataSetPairs)
