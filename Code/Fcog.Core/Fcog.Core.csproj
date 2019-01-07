@@ -165,7 +165,7 @@
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Serialization\IUnWrapped.cs" />
     <Compile Include="Recognition\FormRecognizeException.cs" />
-    <Compile Include="Math\Geometry.cs" />
+    <Compile Include="Units\UnitConverter.cs" />
     <Compile Include="Barcodes\BarCodeMarker.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

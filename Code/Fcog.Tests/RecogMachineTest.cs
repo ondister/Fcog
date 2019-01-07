@@ -67,7 +67,7 @@ namespace Fcog.Tests
                     $"train acc: {machine.TrainResult.TrainAccuracy} test acc: {machine.TrainResult.TestAccuracy} loss:{machine.TrainResult.Loss}");
             };
 
-            machine.StartTrainAsync(TrainerType.Sgd, 20, 100).Wait();
+            machine.StartTrainAsync(TrainerType.Sgd, 20, 1000).Wait();
 
             Assert.IsTrue(machine.TrainResult.TrainAccuracy!=0);
             Assert.IsTrue(machine.TrainResult.TestAccuracy != 0);

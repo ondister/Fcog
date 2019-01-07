@@ -10,15 +10,15 @@ namespace Fcog.Core.Forms.Cells.Content
     [DataContract]
     public class CellContent : INotifyPropertyChanged
     {
-        private Bitmap imageView;
+        private byte[] imageBytes;
         private TextView textView;
 
-        public Bitmap ImageView
+        public byte[] ImageBytes
         {
-            get => imageView;
+            get => imageBytes;
             set
             {
-                imageView = value;
+                imageBytes = value;
                 OnPropertyChanged();
             }
         }

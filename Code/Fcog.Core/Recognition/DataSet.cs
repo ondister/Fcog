@@ -9,8 +9,11 @@ namespace Fcog.Core.Recognition
     public class DataSet
     {
         
-        public static int ImageWeight => 28;
+        public static int ImageWidth => 28;
         public static int ImageHeight => 28;
+
+
+
 
         private const int inputDimention = 1;
         private const int outputWeight = 1;
@@ -52,7 +55,7 @@ namespace Fcog.Core.Recognition
          
             var classesCount = characters.Count;
 
-            var imageShape = new Shape(ImageWeight, ImageHeight, inputDimention, batchSize);
+            var imageShape = new Shape(ImageWidth, ImageHeight, inputDimention, batchSize);
             var outputShape = new Shape(outputWeight, outputHeight, classesCount, batchSize);
             var imageData = new double[imageShape.TotalLength];
             var outputData = new double[outputShape.TotalLength];
@@ -69,7 +72,7 @@ namespace Fcog.Core.Recognition
                 var pixelIndex = 0;
                 for (var heightIndex = 0; heightIndex < ImageHeight; heightIndex++)
                 {
-                    for (var widthIndex = 0; widthIndex < ImageWeight; widthIndex++)
+                    for (var widthIndex = 0; widthIndex < ImageWidth; widthIndex++)
                     {
                         inputVolume.Set(widthIndex, heightIndex, 0, batchIndex, entry.ImageBytes[pixelIndex++] / maxGrayValue);
                     }

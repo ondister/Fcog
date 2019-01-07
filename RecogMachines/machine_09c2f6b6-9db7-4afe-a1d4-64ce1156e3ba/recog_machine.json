@@ -64,9 +64,9 @@
   "Id": "09c2f6b6-9db7-4afe-a1d4-64ce1156e3ba",
   "Name": "Mnist machine",
   "TrainResult": {
-    "EpochsCount": 100,
-    "Loss": 0.13225672986636072,
-    "TestAccuracy": 83,
-    "TrainAccuracy": 88
+    "EpochsCount": 1000,
+    "Loss": 0.029698505728737994,
+    "TestAccuracy": 99,
+    "TrainAccuracy": 96
   }
 }

@@ -43,5 +43,10 @@ namespace Fcog.Core.Forms.Cells
             return adapter;
         }
         #endregion
+
+        public override void Recognize()
+        {
+           
+        }
     }
 }

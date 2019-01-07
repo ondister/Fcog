@@ -16,6 +16,13 @@ namespace Fcog.Core.Recognition
 
         public DataSetPair(byte[] imageBytes, Character character)
         {
+            //check data size
+            var expectedDataLenght = DataSet.ImageHeight * DataSet.ImageWidth;
+            if (imageBytes.Length != expectedDataLenght)
+            {
+                throw new Exception($"Image data must be {expectedDataLenght} bytes");
+            }
+
             ImageBytes = imageBytes;
             Character = character;
         }
@@ -35,7 +42,7 @@ namespace Fcog.Core.Recognition
             {
                 var fileName = Path.ChangeExtension( $"{folderName}{Path.DirectorySeparatorChar}{Character.TextView}_{Character.Index}_{Guid.NewGuid()}",imageExtension);
 
-                SaveBitmap(fileName, DataSet.ImageWeight, DataSet.ImageHeight, ImageBytes);
+                SaveBitmap(fileName, DataSet.ImageWidth, DataSet.ImageHeight, ImageBytes);
             }
            
 

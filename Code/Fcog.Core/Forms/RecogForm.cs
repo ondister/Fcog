@@ -17,9 +17,9 @@ using Fcog.Core.Annotations;
 using Fcog.Core.Barcodes;
 using Fcog.Core.Forms.Cells;
 using Fcog.Core.Forms.Questions;
-using Fcog.Core.Math;
 using Fcog.Core.Recognition;
 using Fcog.Core.Serialization;
+using Fcog.Core.Units;
 
 namespace Fcog.Core.Forms
 {
@@ -138,22 +138,14 @@ namespace Fcog.Core.Forms
       
         public void AddImage(Bitmap image)
         {
-            if (image.HorizontalResolution > imageResolution)
+            if (image.HorizontalResolution != imageResolution)
             {
-                var resizedImage = ResizeImage(image);
-                RecogTools.ImageForRecognize = resizedImage.Clone(PixelFormat.Format24bppRgb);
-                
+                throw new FormRecognizeException($"Image resolution must be {imageResolution} dpi");
+              
             }
-            else if (image.HorizontalResolution < imageResolution)
-            {
-                throw new FormRecognizeException("Image resolution too low. At least 100 dpi required");
-            }
-            else
-            {
+         
                 RecogTools.ImageForRecognize = image.Clone(PixelFormat.Format24bppRgb);
                 
-            }
-
             RecogTools.ImageForRecognize.SetResolution(imageResolution, imageResolution);
             OnImageChanged();
         }
@@ -319,8 +311,12 @@ namespace Fcog.Core.Forms
 
         private void CorrectColorLevels()
         {
+          
             var filter = new BradleyLocalThresholding();
+         
             filter.ApplyInPlace(RecogTools.ImageForRecognize);
+
+
         }
 
         private void RemoveSkew()
@@ -358,14 +354,14 @@ namespace Fcog.Core.Forms
             var blobCounter = new BlobCounter
             {
                 FilterBlobs = true,
-                MinHeight = Geometry.MmToPx(Properties.MarkerHeight - Properties.MarkerHeightTolerance,
+                MinHeight = UnitConverter.MmToPx(Properties.MarkerHeight - Properties.MarkerHeightTolerance,
                     RecogTools.InvertedImage.VerticalResolution),
-                MaxHeight = Geometry.MmToPx(Properties.MarkerHeight + Properties.MarkerHeightTolerance,
+                MaxHeight = UnitConverter.MmToPx(Properties.MarkerHeight + Properties.MarkerHeightTolerance,
                     RecogTools.InvertedImage.VerticalResolution),
                 MinWidth =
-                    Geometry.MmToPx(Properties.MarkerWidth - Properties.MarkerWidthTolerance,
+                    UnitConverter.MmToPx(Properties.MarkerWidth - Properties.MarkerWidthTolerance,
                         RecogTools.InvertedImage.VerticalResolution),
-                MaxWidth = Geometry.MmToPx(Properties.MarkerWidth + Properties.MarkerWidthTolerance,
+                MaxWidth = UnitConverter.MmToPx(Properties.MarkerWidth + Properties.MarkerWidthTolerance,
                     RecogTools.InvertedImage.VerticalResolution)
             };
 

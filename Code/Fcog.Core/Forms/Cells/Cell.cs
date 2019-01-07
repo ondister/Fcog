@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Windows.Controls;
 using Accord.Imaging;
 using Fcog.Core.Annotations;
 using Fcog.Core.Forms.Cells.Content;
@@ -213,7 +214,7 @@ namespace Fcog.Core.Forms.Cells
 
         public RecogTools RecogTools { get; set; }
 
-        public void Recognize()
+        public virtual void Recognize()
         {
 
             //restore rectangle position
@@ -221,7 +222,7 @@ namespace Fcog.Core.Forms.Cells
             Rectangle = CorrectRectanglePosition(Rectangle);
             
             // crop image for content
-            var cellBitmap = RecogTools.ImageForRecognize.Clone(Rectangle, RecogTools.ImageForRecognize.PixelFormat);
+            var cellBitmap = RecogTools.InvertedImage.Clone(Rectangle, RecogTools.ImageForRecognize.PixelFormat);
             //and recognize
             Content = RecogMachine.Recognize(cellBitmap);
 
