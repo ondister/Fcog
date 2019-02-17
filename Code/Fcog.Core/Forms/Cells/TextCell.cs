@@ -48,5 +48,10 @@ namespace Fcog.Core.Forms.Cells
         {
            
         }
+
+        public override async Task RecognizeAsync()
+        {
+
+        }
     }
 }

@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using Accord.Imaging;
 using Fcog.Core.Annotations;
 using Fcog.Core.Forms.Cells.Content;
@@ -112,15 +113,32 @@ namespace Fcog.Core.Forms.Cells
 
         public virtual void Recognize()
         {
-            const int plusSize = 2;
+            const int expandedSize = 2;
             //restore rectangle position
             Rectangle = MarkerDistanceToRectangle(Rectangle, DistanceFromMarker, RecogTools.Marker.CenterOfGravity);
-            Rectangle = CorrectRectanglePosition(Rectangle, plusSize);
+            Rectangle = CorrectRectanglePosition(Rectangle, expandedSize);
 
             // crop image for content
             var cellBitmap = RecogTools.InvertedImage.Clone(Rectangle, RecogTools.ImageForRecognize.PixelFormat);
             //and recognize
             Content = RecogMachine.Recognize(cellBitmap);
+
+            //call event
+            OnRecognized();
+        }
+
+        public virtual async Task RecognizeAsync()
+        {
+            //the constant by which the cell is expanded
+            const int expandedSize = 2;
+            //restore rectangle position
+            Rectangle = MarkerDistanceToRectangle(Rectangle, DistanceFromMarker, RecogTools.Marker.CenterOfGravity);
+            Rectangle = CorrectRectanglePosition(Rectangle, expandedSize);
+
+            // crop image for content
+            var cellBitmap = RecogTools.InvertedImage.Clone(Rectangle, RecogTools.ImageForRecognize.PixelFormat);
+            //and recognize
+            Content = await RecogMachine.RecognizeAsync(cellBitmap);
 
             //call event
             OnRecognized();

@@ -113,10 +113,21 @@ namespace Fcog.Core.Recognition
             return Name;
         }
 
-     
+
 
         #region Recognition
+        public async Task<CellContent> RecognizeAsync(Bitmap cellBitmap)
+        {
+            CellContent result = null;
 
+            await Task.Run(() =>
+          {
+             result= Recognize(cellBitmap);
+            
+          });
+
+            return result;
+        }
         public CellContent Recognize(Bitmap cellBitmap)
         {
             if (!Initialized)
@@ -390,5 +401,7 @@ namespace Fcog.Core.Recognition
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
+      
     }
 }

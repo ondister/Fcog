@@ -176,8 +176,7 @@ namespace Fcog.Demo.Wpf.RecogQuestionnaire
                 var isFormImageValid = await ActiveForm.FindAndCheckMarkerAsync();
                 if (isFormImageValid)
                 {
-                        ActiveForm.Recognize(); 
-
+                       await  ActiveForm.RecognizeAsync();
                 }
                 else
                 {

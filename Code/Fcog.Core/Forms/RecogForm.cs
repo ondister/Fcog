@@ -80,6 +80,14 @@ namespace Fcog.Core.Forms
 
         }
 
+        public async Task RecognizeAsync()
+        {
+            foreach (var question in Questions)
+            {
+               await question.RecognizeAsync();
+            }
+        }
+
         private void UpdateRecogTools()
         {
             foreach (var question in questions)

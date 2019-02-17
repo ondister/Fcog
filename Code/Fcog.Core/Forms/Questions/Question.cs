@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using Fcog.Core.Annotations;
 using Fcog.Core.Forms.Cells;
 using Fcog.Core.Recognition;
@@ -93,6 +94,14 @@ namespace Fcog.Core.Forms.Questions
             foreach (var cell in Cells)
             {
                 cell.Recognize();
+            }
+        }
+
+        public async Task RecognizeAsync()
+        {
+            foreach (var cell in Cells)
+            {
+                await cell.RecognizeAsync();
             }
         }
 

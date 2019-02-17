@@ -13,5 +13,6 @@ namespace Fcog.Core.Forms
 
         void Recognize();
 
+        Task RecognizeAsync();
     }
 }

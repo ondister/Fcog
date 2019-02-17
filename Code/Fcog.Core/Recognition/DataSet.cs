@@ -97,7 +97,7 @@ namespace Fcog.Core.Recognition
         }
 
 
-       internal void AddDataSetPair(DataSetPair pair)
+       public void AddDataSetPair(DataSetPair pair)
         {
             dataSetPairs.Add(pair);
         }
