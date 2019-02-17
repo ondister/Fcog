@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.Remoting;
+using Fcog.Core.Forms.Cells.Content;
 using Fcog.Core.Recognition;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -52,6 +53,8 @@ namespace Fcog.Tests
             Assert.IsNotNull(restoredMachine.DataSets?.TrainDataSet);
             Assert.IsNotNull(restoredMachine.DataSets?.TestDataSet);
         }
+
+       
 
         [TestMethod]
         public void MachineTrain()

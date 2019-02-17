@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using ConvNetSharp.Volume;
 using ConvNetSharp.Volume.Double;
 
@@ -65,6 +66,7 @@ namespace Fcog.Core.Recognition
 
             for (var batchIndex = 0; batchIndex < batchSize; batchIndex++)
             {
+#warning add try catch for autofrange exception
                 var entry = dataSetPairs[dataIndex];
 
                 charactersBatch.Add(entry.Character);
@@ -95,12 +97,33 @@ namespace Fcog.Core.Recognition
         }
 
 
-        public void AddDataSetPair(DataSetPair pair)
+       internal void AddDataSetPair(DataSetPair pair)
         {
             dataSetPairs.Add(pair);
         }
 
+        public DataSetStatistics GetStatistics()
+        {
+          
+            var datasetPairscount = dataSetPairs.Count;
+            var result = new DataSetStatistics(datasetPairscount);
 
-      
+            foreach (var character in characters)
+            {
+                var charactersCount = dataSetPairs.Count(p => p.Character.Equals(character));
+                var frequency = 0.0;
+
+                if (datasetPairscount != 0)
+                {
+                  frequency = (double) charactersCount / datasetPairscount;
+                }
+
+                var characterStatistics= new CharacterStatistics(character,frequency, charactersCount);
+                result.AddCharacterStatistics(characterStatistics);
+            }
+
+            return result;
+        }
+
     }
 }

@@ -5,31 +5,120 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Fcog.Demo.Wpf.TrainRecogMachine"
         xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+        xmlns:oxy="http://oxyplot.org/wpf"
         mc:Ignorable="d"
-        Title="RecogMachines Manager" Name="This" Height="600" Width="800" WindowStartupLocation="CenterOwner" Loaded="RecogMachinesManager_OnLoaded">
+        Title="RecogMachines Manager" Name="This" Height="600" Width="1000" WindowStartupLocation="CenterOwner" Loaded="RecogMachinesManager_OnLoaded">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        
+
         <Grid Grid.Column="0">
             <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <GroupBox Header="Machines">
-                <ListBox Name="ListBoxmachines" ItemsSource="{Binding ElementName=This, Path=Machines}" SelectionChanged="ListBoxmachines_OnSelectionChanged"></ListBox>
+                <ListBox Name="ListBoxmachines" ItemsSource="{Binding ElementName=This, Path=Machines}"  SelectionChanged="ListBoxmachines_OnSelectionChanged"></ListBox>
             </GroupBox>
-            
-            <GroupBox Header="MachineInfo" Grid.Row="1">
+
+            <GroupBox Header="Train Dataset" Grid.Row="1" MaxHeight="200">
+            <ListBox Name="ListBoxTrainDatasetInfo"></ListBox>
+            </GroupBox>
+
+            <GroupBox Header="Test Dataset" Grid.Row="2" MaxHeight="200">
+                <ListBox Name="ListBoxTestDatasetInfo"></ListBox>
+            </GroupBox>
+
+            <GroupBox Header="MachineInfo" Grid.Row="3" >>
 
             </GroupBox>
         </Grid>
-    
+
 
         <GroupBox Grid.Column="1" Header="Machine Train">
-           
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <GroupBox Grid.Column="0" Grid.Row="0"  Header="Train Properties">
+                   <Grid >
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        
+                        <Label Grid.Column="0" Grid.Row="0" Margin="2">Batch Size:</Label>
+                        <mah:NumericUpDown Grid.Column="1" Grid.Row="0" Margin="2" Name="NumericUpDownBatchSize" MinWidth="1"  Value="100" Minimum="1" Maximum="1000" Interval="10" NumericInputMode="Numbers" />
+
+                        <Label Grid.Column="0" Grid.Row="1" Margin="2">Max Iterations:</Label>
+                        <mah:NumericUpDown Grid.Column="1" Grid.Row="1" Margin="2" Name="NumericUpDownMaxIterations" MinWidth="100" Value="1000" Minimum="100" Maximum="100000" Interval="100" NumericInputMode="Numbers" />
+
+                        <Label Grid.Column="0" Grid.Row="2" Margin="2">Min test accuracy:</Label>
+                        <mah:NumericUpDown Grid.Column="1" Grid.Row="2" Margin="2" Name="NumericUpDownMinTestAccuracy" MinWidth="100" Value="1" Minimum="0.1" Maximum="1" Interval="0.1" NumericInputMode="Decimal" AllowDrop="True"  />
+                        
+                    </Grid>
+                </GroupBox>
+
+                <StackPanel Orientation="Vertical" Grid.Column="1" Grid.Row="0">
+                    <Button  Margin="2" Name="ButtonStartTrain" Click="ButtonStartTrain_OnClick">Start Train</Button>
+                    <Button  Margin="2" Name="ButtonStopTrain" Click="ButtonStopTrain_OnClick">Stop Train</Button>
+                    <Button  Margin="2" Name="ButtonSaveMachine"  Click="ButtonSaveMachine_OnClick">Save Machine</Button>
+                </StackPanel>
+             
+                    <oxy:Plot  Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" LegendPosition="BottomRight" >
+                    <oxy:Plot.Axes>
+                        <oxy:LinearAxis Position="Left" Minimum="0" Maximum="1" Title="Value"/>
+                        <oxy:LinearAxis Position="Bottom" Minimum="0" Maximum="{Binding ElementName=NumericUpDownMaxIterations, Path=Value}" Title="Epochs"/>
+                    </oxy:Plot.Axes>
+
+                    <oxy:Plot.Series>
+                        <oxy:LineSeries Name="TrainLineSeries" ItemsSource="{Binding ElementName=This, Path= TrainPoints}" 
+                                        DataFieldX="X" 
+                                        DataFieldY="Y"
+                                        StrokeThickness="4"
+                                        MarkerSize="0"
+                                        LineStyle="Solid"
+                                        MarkerType="None" Smooth="True" Title="Train Accuracy" Color ="Green"/>
+                        <oxy:LineSeries Name="TestLineSeries" ItemsSource="{Binding ElementName=This, Path= TestPoints}" 
+                                        DataFieldX="X" 
+                                        DataFieldY="Y"
+                                        StrokeThickness="4"
+                                        MarkerSize="0"
+                                        LineStyle="Solid"
+                                        MarkerType="None" Smooth="True" Title="Test Accuracy" Color ="Red"/>
+                        <oxy:LineSeries Name="LossLineSeries"  
+                                        DataFieldX="X" 
+                                        DataFieldY="Y"
+                                        StrokeThickness="4"
+                                        MarkerSize="0"
+                                        LineStyle="Solid"
+                                        MarkerType="None" Smooth="True" Title="Loss" Color ="Black"/>
+                    </oxy:Plot.Series>
+
+                    <oxy:Plot.Annotations>
+                        <oxy:TextAnnotation TextColor="Green" Text="{Binding ElementName=This, Path=CurrentTrainAccuracyText}" TextPosition="{oxy:DataPoint 5,0.9}" Stroke="Transparent" />
+                        <oxy:TextAnnotation TextColor="Red" Text="{Binding ElementName=This, Path=CurrentTestAccuracyText}" TextPosition="{oxy:DataPoint 5,0.8}" Stroke="Transparent" />
+                        <oxy:TextAnnotation TextColor="Black" Text="{Binding ElementName=This, Path=CurrentLossText}" TextPosition="{oxy:DataPoint 5,0.7}" Stroke="Transparent" />
+                    </oxy:Plot.Annotations>
+                </oxy:Plot>
+              
+            </Grid>
         </GroupBox>
     </Grid>
 </mah:MetroWindow>

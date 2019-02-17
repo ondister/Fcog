@@ -21,7 +21,7 @@ namespace Fcog.Core.Forms.Questions
                 Index = Index,
                 Label = Label,
                 RecogTools = RecogTools.Wrap(),
-                RecogMachine = recogMachine.Wrap()
+                RecogMachine = RecogMachine.Wrap()
             };
 
             return adapter;
@@ -30,7 +30,7 @@ namespace Fcog.Core.Forms.Questions
 
         public override Cell AddCell(string cellLabel)
         {
-            var cell = new LetterCell(RecogTools, recogMachine)
+            var cell = new LetterCell(RecogTools, RecogMachine)
             {
                 Label = cellLabel
             };

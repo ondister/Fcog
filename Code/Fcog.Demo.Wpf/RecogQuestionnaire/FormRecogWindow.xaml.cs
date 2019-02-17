@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Forms;
@@ -81,7 +82,10 @@ namespace Fcog.Demo.Wpf.RecogQuestionnaire
             var templateFileWriter = new TemplateFileWriter(fileStorePath);
             try
             {
+                //save datsets
+               RecogMachinesPool.Instance.SaveAllDataSets();
               //  questionnaire.SaveTemplate(templateFileWriter);
+              
                 Close();
             }
             catch (FormRecognizeException ex)
@@ -167,26 +171,27 @@ namespace Fcog.Demo.Wpf.RecogQuestionnaire
         {
             StartProgress();
 
-            //try
-            //{
+            try
+            {
                 var isFormImageValid = await ActiveForm.FindAndCheckMarkerAsync();
                 if (isFormImageValid)
                 {
-                    ActiveForm.Recognize();
+                        ActiveForm.Recognize(); 
+
                 }
                 else
                 {
                     MessageBox.Show("Form image Id and index not equal with loaded temlape", "Error");
                 }
-            //}
-            //catch (Exception ex)
-            //{
-            //    MessageBox.Show(ex.Message, "Error");
-            //}
-            //finally
-            //{
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error");
+            }
+            finally
+            {
                 StopProgress();
-           // }
+            }
         }
     }
 }

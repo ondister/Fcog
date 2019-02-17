@@ -2,6 +2,7 @@
 using System.Linq;
 using Fcog.Core.Forms.Cells;
 using Fcog.Core.Localization;
+using Fcog.Core.Recognition;
 using Fcog.Core.Serialization.Questions;
 
 namespace Fcog.Core.Forms.Questions
@@ -21,7 +22,7 @@ namespace Fcog.Core.Forms.Questions
                 RemoveCell(Cells.Single());
             }
 
-            var cell = new CheckCell(RecogTools, recogMachine)
+            var cell = new CheckCell(RecogTools, RecogMachine)
             {
                 Label = cellLabel
             };
@@ -34,24 +35,14 @@ namespace Fcog.Core.Forms.Questions
             return cell;
         }
 
-        //public Cell AddCell(Guid cellGuid, string cellLabel)
-        //{
-        //    //clear cell
-        //    if (Cells.Any())
-        //    {
-        //        RemoveCell(Cells.Single());
-        //    }
-
-        //    var cell = new CheckCell(cellGuid, RecogTools, recogMachine)
-        //    {
-        //        Label = cellLabel
-        //    };
-        //    cells.Add(cell);
-        //    cell.Index = cells.IndexOf(cell);
-        //    cell.Label = Label;
-        //    OnCellAdded(new CellEventArgs(cell));
-        //    return cell;
-        //}
+        internal override void SetRecogMachine(RecogMachine recogMachine)
+        {
+            base.SetRecogMachine(recogMachine);
+            foreach (var cell in Cells)
+            {
+                cell.SetRecogMachine(RecogMachine);
+            }
+        }
 
         internal override void AddCell(Cell cell)
         {
@@ -74,7 +65,7 @@ namespace Fcog.Core.Forms.Questions
                 Index = Index,
                 Label = Label,
                 RecogTools = RecogTools.Wrap(),
-                RecogMachine = recogMachine.Wrap()
+                RecogMachine = RecogMachine.Wrap()
             };
 
             return adapter;
@@ -85,7 +76,7 @@ namespace Fcog.Core.Forms.Questions
 
         internal MarkQuestion(string label, RecogTools recogTools) : base(label, recogTools)
         {
-            AddCell(label);
+            AddCell(Label);
         }
 
         internal MarkQuestion(string label, Guid guid, RecogTools recogTools) : base(label, guid, recogTools)
@@ -93,5 +84,7 @@ namespace Fcog.Core.Forms.Questions
         }
 
         #endregion
+
+     
     }
 }

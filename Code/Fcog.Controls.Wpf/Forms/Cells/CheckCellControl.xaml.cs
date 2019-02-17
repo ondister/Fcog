@@ -10,6 +10,7 @@ using Fcog.Controls.Wpf.Annotations;
 using Fcog.Core.Forms;
 using Fcog.Core.Forms.Cells;
 using Fcog.Core.Forms.Cells.Content;
+using Fcog.Core.Recognition;
 using Rectangle = System.Drawing.Rectangle;
 
 namespace Fcog.Controls.Wpf.Forms.Cells
@@ -41,21 +42,35 @@ namespace Fcog.Controls.Wpf.Forms.Cells
 
         private void Cell_Recognized(object sender, EventArgs e)
         {
-           CellRectangle= new CellRectangle(Cell.Rectangle.Height, Cell.Rectangle.Width, Cell.Rectangle.Y, Cell.Rectangle.X);
-           Canvas.SetLeft(CellRectangle.RectangleShape,CellRectangle.X);
-           Canvas.SetTop(CellRectangle.RectangleShape, CellRectangle.Y);
+          SetRectangle();
+        }
+
+        private void SetRectangle()
+        {
+            CellRectangle = new CellRectangle(Cell.Rectangle.Height, Cell.Rectangle.Width, Cell.Rectangle.Y, Cell.Rectangle.X);
+            Canvas.SetLeft(CellRectangle.RectangleShape, CellRectangle.X);
+            Canvas.SetTop(CellRectangle.RectangleShape, CellRectangle.Y);
 
             var binding = new Binding(nameof(Cell.Content.TextView))
             {
                 Source = Cell.Content,
                 Converter = new TextViewToBrushConverter(),
-                Mode=BindingMode.TwoWay,
+                Mode = BindingMode.TwoWay,
                 UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged
             };
             BindingOperations.SetBinding(CellRectangle.RectangleShape, Shape.FillProperty, binding);
-           
-           ImageCanvas.Children.Add(CellRectangle.RectangleShape);
+
+            //add menu
+            if (FindResource("ContentMenu") is ContextMenu contextMenu)
+            {
+                CellRectangle.RectangleShape.ContextMenu = contextMenu;
+            }
+
+            ImageCanvas.Children.Add(CellRectangle.RectangleShape);
+
+
         }
+
 
         public CellRectangle CellRectangle
         {
@@ -135,7 +150,7 @@ namespace Fcog.Controls.Wpf.Forms.Cells
 
         private void ButtonSendData_OnClick(object sender, RoutedEventArgs e)
         {
-          // Cell.Content.AddToTrainingSet();
+           Cell.AddContentToDataset();
         }
 
         private void ButtonSelectCell_OnClick(object sender, RoutedEventArgs e)

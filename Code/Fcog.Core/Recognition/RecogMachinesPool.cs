@@ -58,5 +58,37 @@ namespace Fcog.Core.Recognition
 
             return result;
         }
+
+        public async Task SaveRecogMachineAsync(RecogMachine recogMachine)
+        {
+            if (store == null) { throw new Exception("RecogMachine store not Initialized. Initialize it first"); }
+
+           await store.SaveRecogMachineAsync(recogMachine);
+        }
+
+        public async Task SaveDataSetsAsync(RecogMachine recogMachine)
+        {
+            if (store == null) { throw new Exception("RecogMachine store not Initialized. Initialize it first"); }
+
+            if (recogMachine.DataSets.Changed)
+            {
+                await store.SaveDataSetsAsync(recogMachine);
+            }
+        }
+
+        public void SaveAllDataSets()
+        {
+            if (store == null) { throw new Exception("RecogMachine store not Initialized. Initialize it first"); }
+
+            var saveTasks = new List<Task>();
+            foreach (var machine in RecogMachines)
+            {
+                var saveTask = Task.Factory.StartNew(async () => await SaveDataSetsAsync(machine));
+                saveTasks.Add(saveTask);
+            }
+            Task.WaitAll(saveTasks.ToArray());
+
+            }
+
     }
 }

@@ -22,7 +22,7 @@ namespace Fcog.Core.Forms.Questions
                 Index = Index,
                 Label = Label,
                 RecogTools = RecogTools.Wrap(),
-                RecogMachine = recogMachine.Wrap()
+                RecogMachine = RecogMachine.Wrap()
             };
 
             return adapter;
@@ -37,7 +37,7 @@ namespace Fcog.Core.Forms.Questions
                 RemoveCell(Cells.Single());
             }
 
-            var cell = new TextCell(RecogTools, recogMachine)
+            var cell = new TextCell(RecogTools, RecogMachine)
             {
                 Label = cellLabel
             };

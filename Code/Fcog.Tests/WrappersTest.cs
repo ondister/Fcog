@@ -14,17 +14,31 @@ namespace Fcog.Tests
     [TestClass]
     public class WrappersTest
     {
-     
 
-        private const string testImageFileName = @"TestImages\scan1.jpeg";
-        private const int formId = 1111111111;   //as barcode of test image form id and index
+        private const string machinesPath = @"../../RecogMachines";
+        private const string testImageFileName = @"../../FormsExamples/TestFormFill2.jpeg";
+        private const int formId = 999999999;   //as barcode of test image form id and index
         private const int formIndex = 1;
+
+        private const string markMachineGuid= "b16873e7-95c1-4af9-9b12-0ef85b128eb4";
+        private const string mnistMachineGuid = "09c2f6b6-9db7-4afe-a1d4-64ce1156e3ba";
 
         [TestMethod]
         public void QWrapperSmokeTest()
         {
-            #region Set properties
+            #region Store
 
+            var store = new RecogMachinesFileStore(machinesPath);
+            RecogMachinesPool.Instance.InitializeStoreAsync(store).Wait();
+            var markMachine = store.GetRecogMachineAsync(Guid.Parse(markMachineGuid)).Result;
+            var mnistMachine = store.GetRecogMachineAsync(Guid.Parse(mnistMachineGuid)).Result;
+            Assert.IsNotNull(markMachine);
+            Assert.IsNotNull(mnistMachine);
+
+            #endregion
+
+
+            #region Set properties
             //set basic properties
             var qProperties = new QuestionnareProperties
             {
@@ -75,28 +89,30 @@ namespace Fcog.Tests
             #region Add questions
 
             //add markQuestion
-            var markQuestion = recogForm.AddQuestion(typeof(MarkQuestion), "Mark question label", new RecogMachine());
-            markQuestion.AddCell("Mark question cell").DistanceFromMarker = new MarkerDistance(0, 0);
+            //mark question always have single cell
+            var markQuestion = recogForm.AddQuestion(typeof(MarkQuestion), "Mark question label", markMachine);
+            markQuestion.Cells.Single().DistanceFromMarker = new MarkerDistance(0, 0);
+            //markQuestion.AddCell("Mark question cell").DistanceFromMarker = new MarkerDistance(0, 0);
 
 
             //add multiQuestion
-            var multiQuestion = recogForm.AddQuestion(typeof(MultiQuestion), "Multi question label", new RecogMachine());
+            var multiQuestion = recogForm.AddQuestion(typeof(MultiQuestion), "Multi question label",  markMachine);
             multiQuestion.AddCell("Multi question cell 1").DistanceFromMarker = new MarkerDistance(0, 0);
             multiQuestion.AddCell("Multi question cell 2").DistanceFromMarker = new MarkerDistance(0, 0);
 
 
             //add RecogTextQuestion
-            var recogTextQuestion = recogForm.AddQuestion(typeof(RecogTextQuestion), "RecogText question label", new RecogMachine());
+            var recogTextQuestion = recogForm.AddQuestion(typeof(RecogTextQuestion), "RecogText question label",mnistMachine);
             recogTextQuestion.AddCell("RecogText question cell 1").DistanceFromMarker = new MarkerDistance(0, 0);
             recogTextQuestion.AddCell("RecogText question cell 2").DistanceFromMarker = new MarkerDistance(0, 0);
 
             //add SingleQuestion
-            var singleQuestion = recogForm.AddQuestion(typeof(SingleQuestion), "Single question label", new RecogMachine());
+            var singleQuestion = recogForm.AddQuestion(typeof(SingleQuestion), "Single question label", markMachine);
             singleQuestion.AddCell("Single question cell 1").DistanceFromMarker = new MarkerDistance(0, 0);
             singleQuestion.AddCell("Single question cell 2").DistanceFromMarker = new MarkerDistance(0, 0);
 
             //add TextQuestion
-            var textQuestion = recogForm.AddQuestion(typeof(TextQuestion), "Text question label", new RecogMachine());
+            var textQuestion = recogForm.AddQuestion(typeof(TextQuestion), "Text question label", markMachine);
             textQuestion.AddCell("Text question cell 1").DistanceFromMarker = new MarkerDistance(0, 0);
 
             #endregion
@@ -122,10 +138,12 @@ namespace Fcog.Tests
             foreach (var question in unwrappedrecogForm.Questions)
             {
                 Assert.AreSame(unwrappedrecogForm.RecogTools,question.RecogTools);
+                Assert.IsNotNull(question.RecogMachine);
 
                 foreach (var cell in question.Cells)
                 {
                     Assert.AreSame( question.RecogTools,cell.RecogTools);
+                    Assert.IsNotNull(cell.RecogMachine);
                 }
             }
 

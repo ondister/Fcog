@@ -83,6 +83,13 @@ namespace Fcog.Core.Recognition
             return result;
         }
 
+        public Task RemoveMachineAsync(Guid recogMachineGuid)
+        {
+            throw new NotImplementedException();
+        }
+
+      
+
         private RecogMachine GetMachine(DirectoryInfo machineDirectoryInfo)
         {
             RecogMachine machine = null;
@@ -116,7 +123,7 @@ namespace Fcog.Core.Recognition
             {
                 var imageFile = imageFiles.Single();
 
-                using (var fileStream = new FileStream(imageFile,FileMode.Open))
+                using (var fileStream = new FileStream(imageFile,FileMode.Open,FileAccess.Read,FileShare.Delete))
                 {
                     using (var reader = new BinaryReader(fileStream))
                     {
@@ -128,8 +135,7 @@ namespace Fcog.Core.Recognition
                         for (var index = 0; index < numberOfImage; index++)
                         {
                             var image = reader.ReadBytes(rowCount * columnCount);
-                          
-                           
+
                            images.Add(image);
                         }
                     }
@@ -141,7 +147,7 @@ namespace Fcog.Core.Recognition
             {
                 var labelFile = labelFiles.Single();
 
-                using (var fileStream = new FileStream(labelFile, FileMode.Open))
+                using (var fileStream = new FileStream(labelFile, FileMode.Open,FileAccess.Read,FileShare.Delete))
                 {
                     using (var reader = new BinaryReader(fileStream))
                     {
@@ -172,10 +178,9 @@ namespace Fcog.Core.Recognition
                 }
             }
 
-            if (dataSetPairs.Any())
-            {
+          
                 dataSet= new DataSet(dataSetPairs,recogMachine.Characters);
-            }
+         
             return dataSet;
         }
 
@@ -202,6 +207,16 @@ namespace Fcog.Core.Recognition
         #endregion
 
         #region SaveMachine
+        public async Task SaveDataSetsAsync(RecogMachine recogMachine)
+        {
+            if (recogMachine.Initialized)
+            {
+             var directoryInfo = GetDirectory($"{folderName}{Path.DirectorySeparatorChar}{machineDirPreffix}_{recogMachine.Id}");
+
+              await Task.Run(() => SaveDataSet(new DirectoryInfo($"{directoryInfo.FullName}{Path.DirectorySeparatorChar}{testFilePreffix}"), recogMachine.DataSets.TestDataSet));
+              await Task.Run(() => SaveDataSet(new DirectoryInfo($"{directoryInfo.FullName}{Path.DirectorySeparatorChar}{trainFilePreffix}"), recogMachine.DataSets.TrainDataSet));
+            }
+        }
 
         public async Task SaveRecogMachineAsync(RecogMachine recogMachine)
         {
@@ -213,8 +228,7 @@ namespace Fcog.Core.Recognition
 
                 await SaveNetAsync(directoryInfo, recogMachine.ConvolutionNet);
 
-                await Task.Run(()=> SaveDataSet(new DirectoryInfo($"{directoryInfo.FullName}{Path.DirectorySeparatorChar}{testFilePreffix}"), recogMachine.DataSets.TestDataSet));
-                await Task.Run(() => SaveDataSet(new DirectoryInfo($"{directoryInfo.FullName}{Path.DirectorySeparatorChar}{trainFilePreffix}"), recogMachine.DataSets.TrainDataSet));
+                await SaveDataSetsAsync(recogMachine);
             }
         }
 
@@ -260,10 +274,12 @@ namespace Fcog.Core.Recognition
         
         private void SaveDataSet(FileSystemInfo directoryInfo, DataSet dataSet)
         {
+#warning add error check
             var imageFileName = $"{directoryInfo}{imagesFilePreffix}{imagesFileExtension}";
             var charactersFileName = $"{directoryInfo}{charactersFilePreffix}{charactersFileExtension}";
             //write bytes data
-            using (var filestream = new FileStream(imageFileName, FileMode.Create))
+            File.Delete(imageFileName);
+            using (var filestream = new FileStream(imageFileName, FileMode.CreateNew))
             {
                 using (var writer = new BinaryWriter(filestream))
                 {
@@ -282,8 +298,9 @@ namespace Fcog.Core.Recognition
                     }
                 }
             }
-        //write labels data
-            using (var filestream = new FileStream(charactersFileName, FileMode.Create))
+            //write labels data
+            File.Delete(charactersFileName);
+            using (var filestream = new FileStream(charactersFileName, FileMode.CreateNew))
             {
                 using (var writer = new BinaryWriter(filestream))
                 {
@@ -319,7 +336,10 @@ namespace Fcog.Core.Recognition
                             if (Guid.TryParse(guidString[1],out var guid))
                             {
                                 var machine = await GetRecogMachineAsync(guid);
-                                machines.Add(machine);
+                                if (machine != null)
+                                {
+                                    machines.Add(machine);
+                                }
                             }
                         }
                     }

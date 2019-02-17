@@ -117,7 +117,7 @@ namespace Fcog.Controls.Wpf.Forms.Cells
 
         private void ButtonSendData_OnClick(object sender, RoutedEventArgs e)
         {
-         //   Cell.Content.AddToTrainingSet();
+            Cell.AddContentToDataset();
         }
 
         private void ButtonSelectCell_OnClick(object sender, RoutedEventArgs e)

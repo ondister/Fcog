@@ -19,7 +19,6 @@ namespace Fcog.Core.Forms.Questions
         private int index;
         private string label;
 
-        protected RecogMachine recogMachine;
         private RecogTools recogTools;
 
         private Question()
@@ -85,7 +84,8 @@ namespace Fcog.Core.Forms.Questions
             }
         }
 
-        public RecogMachine RecogMachine => recogMachine;
+        public RecogMachine RecogMachine { get; internal set; }
+    
 
         public void Recognize()
         {
@@ -96,9 +96,13 @@ namespace Fcog.Core.Forms.Questions
             }
         }
 
-        internal void SetRecogMachine(RecogMachine recogMachine)
+        internal virtual void SetRecogMachine(RecogMachine recogMachine)
         {
-            this.recogMachine = recogMachine;
+            RecogMachine = recogMachine;
+            foreach (var cell in Cells)
+            {
+                cell.SetRecogMachine(RecogMachine);
+            }
         }
 
         public event EventHandler<CellEventArgs> CellAdded;

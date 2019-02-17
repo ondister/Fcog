@@ -71,10 +71,13 @@ namespace Fcog.Core.Forms
 
         public void Recognize()
         {
+          
             foreach (var question in Questions)
             {
-                 question.Recognize();
+               question.Recognize();
             }
+           
+
         }
 
         private void UpdateRecogTools()
@@ -416,6 +419,7 @@ namespace Fcog.Core.Forms
             var question = QuestionsDictionary.GetQuestion(questionType, label, RecogTools);
 
             question.SetRecogMachine(recogMachine);
+            
             questions.Add(question);
             question.Index = questions.IndexOf(question);
             OnQuestionAdded(new QuestionEventArgs(question));

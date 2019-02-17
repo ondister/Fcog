@@ -32,6 +32,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Accord, Version=3.8.0.0, Culture=neutral, PublicKeyToken=fa1a88e29555ccf7, processorArchitecture=MSIL">
@@ -63,7 +64,9 @@
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Drawing" />
+    <Reference Include="System.Drawing">
+      <HintPath>C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5.2\System.Drawing.dll</HintPath>
+    </Reference>
     <Reference Include="System.IO.Abstractions, Version=2.0.0.118, Culture=neutral, PublicKeyToken=d480b5b72fb413da, processorArchitecture=MSIL">
       <HintPath>..\packages\System.IO.Abstractions.2.0.0.118\lib\net40\System.IO.Abstractions.dll</HintPath>
       <Private>True</Private>
@@ -92,7 +95,9 @@
     <Compile Include="Forms\WorkMode.cs" />
     <Compile Include="IO\Templates\Readers\TemplateFileReader.cs" />
     <Compile Include="Recognition\Character.cs" />
+    <Compile Include="Recognition\CharacterStatistics.cs" />
     <Compile Include="Recognition\CircularBuffer.cs" />
+    <Compile Include="Recognition\DataSetStatistics.cs" />
     <Compile Include="Recognition\RecogMachinesPool.cs" />
     <Compile Include="Recognition\TrainersFactory.cs" />
     <Compile Include="Recognition\TrainerType.cs" />

@@ -1,23 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Drawing;
+using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Accord.Imaging.Filters;
 using ConvNetSharp.Core;
 using ConvNetSharp.Core.Layers.Double;
 using ConvNetSharp.Volume;
 using ConvNetSharp.Volume.Double;
+using Fcog.Core.Annotations;
 using Fcog.Core.Forms.Cells.Content;
 using Fcog.Core.Serialization;
 using Fcog.Core.Serialization.Recognition;
 
 namespace Fcog.Core.Recognition
 {
-    public class RecogMachine : IWrapped<RecogMachineWrapper>
+    public class RecogMachine : IWrapped<RecogMachineWrapper>,INotifyPropertyChanged
     {
         private readonly Collection<Character> characters;
+        
 
         public Guid Id { get; }
         public string Name { get; set; }
@@ -56,6 +61,11 @@ namespace Fcog.Core.Recognition
             return characters.FirstOrDefault(c => c.Index == index);
         }
 
+        public Character FindCharacter(TextView textView)
+        {
+            return characters.FirstOrDefault(c => c.TextView.Equals(textView));
+        }
+
         #region Initialize
 
         public void Initialize()
@@ -79,10 +89,10 @@ namespace Fcog.Core.Recognition
 
             ConvolutionNet = new Net<double>();
             ConvolutionNet.AddLayer(new InputLayer(DataSet.ImageWidth, DataSet.ImageHeight, dimention));
-            ConvolutionNet.AddLayer(new ConvLayer(5, 5, 8) {Stride = 1, Pad = 2});
+            ConvolutionNet.AddLayer(new ConvLayer(3, 3, 8) {Stride = 1, Pad = 2});
             ConvolutionNet.AddLayer(new ReluLayer());
             ConvolutionNet.AddLayer(new PoolLayer(2, 2) {Stride = 2});
-            ConvolutionNet.AddLayer(new ConvLayer(5, 5, 16) {Stride = 1, Pad = 2});
+            ConvolutionNet.AddLayer(new ConvLayer(3, 3, 16) {Stride = 1, Pad = 2});
             ConvolutionNet.AddLayer(new ReluLayer());
             ConvolutionNet.AddLayer(new PoolLayer(3, 3) {Stride = 3});
             ConvolutionNet.AddLayer(new FullyConnLayer(characters.Count));
@@ -122,10 +132,19 @@ namespace Fcog.Core.Recognition
             var clearedBitmap = ClearBitmap(cellBitmap, fillThickness);
             var resizedBitmap = ResizeBitmap(clearedBitmap);
 
+
             var imageBytes = ConvertBitmap(resizedBitmap);
+
+#if DEBUG
+            Directory.CreateDirectory("images");
+            var dataPair= new DataSetPair(imageBytes,new Character(0,TextViews.Empty));
+            dataPair.Save($"images");
+#endif
+
+
             var inputData = CreateInputData(imageBytes);
 
-            #endregion
+#endregion
 
             ConvolutionNet.Forward(inputData);
             var prediction = ConvolutionNet.GetPrediction();
@@ -228,9 +247,9 @@ namespace Fcog.Core.Recognition
             return inputVolume;
         }
 
-        #endregion
+#endregion
 
-        #region Constructors
+#region Constructors
 
         public RecogMachine()
         {
@@ -251,9 +270,9 @@ namespace Fcog.Core.Recognition
             Id = id;
         }
 
-        #endregion
+#endregion
         
-        #region Train
+#region Train
 
         public event EventHandler EpochDone;
         protected virtual void OnEpochDone()
@@ -262,14 +281,24 @@ namespace Fcog.Core.Recognition
         }
 
         private bool training;
+        public bool Training
+        {
+            get => training;
+            private set
+            {
+                if (value == training) return;
+                training = value;
+                OnPropertyChanged();
+            }
+        }
 
         public TrainResult TrainResult { get; internal set; }
 
-        public async Task StartTrainAsync(TrainerType trainerType, int batchSize, int maxEpochs)
+        public async Task StartTrainAsync(TrainerType trainerType, int batchSize, int maxEpochs, double minTestAcuracy=1)
         {
 #warning сдедать проверку на инициализацию и наличие необходимого количества данных, совпадение данных и  символов машины
-            TrainResult = new TrainResult();
-            training = true;
+           TrainResult = new TrainResult();
+           Training = true;
 
             //reset net by create new
             CreateNet();
@@ -280,35 +309,47 @@ namespace Fcog.Core.Recognition
                 await Task.Run(() =>
                 {
 #warning возможно нужно перемешать
+                    const int minBufferLenght = 100;
+                    var bufferSize = batchSize >= minBufferLenght ? batchSize : minBufferLenght;
 
-                    var trainAccuracyBuffer = new CircularBuffer<double>(100);
-                    var testAccuracyBuffer = new CircularBuffer<double>(100);
+                    var trainAccuracyBuffer = new CircularBuffer<double>(bufferSize);
+                    var testAccuracyBuffer = new CircularBuffer<double>(bufferSize);
                     for (var epoch = 1; epoch <= maxEpochs; epoch++)
                     {
                         var trainSample = DataSets.TrainDataSet.NextBatch(batchSize);
                         var testSample = DataSets.TestDataSet.NextBatch(batchSize);
 
-                        #region Train
+#region Train
 
                         trainer.Train(trainSample.InputVolume, trainSample.OutputVolume);
                         Test(trainSample.InputVolume, trainSample.Characters, trainAccuracyBuffer, false);
                         TrainResult.Loss = trainer.Loss;
-                        TrainResult.TrainAccuracy = Math.Round(trainAccuracyBuffer.Items.Average() * 100.0, 2);
+                      
+                        TrainResult.TrainAccuracy = Math.Round(trainAccuracyBuffer.Items.Average(), 2);
 
-                        #endregion
+                      
 
-                        #region Test
+
+#endregion
+
+#region Test
 
                         Test(testSample.InputVolume, testSample.Characters, testAccuracyBuffer, true);
-                        TrainResult.TestAccuracy = Math.Round(testAccuracyBuffer.Items.Average() * 100.0, 2);
+                        TrainResult.TestAccuracy = Math.Round(testAccuracyBuffer.Items.Average(), 2);
 
-                        #endregion
+#endregion
 
                         TrainResult.EpochsCount = epoch;
 
                         OnEpochDone();
 
-                        if (!training)
+                        //stop training conditions
+                        if (TrainResult.TestAccuracy >= minTestAcuracy)
+                        {
+                           StopTrain();
+                        }
+
+                        if (!Training)
                         {
                             break;
                         }
@@ -337,9 +378,17 @@ namespace Fcog.Core.Recognition
 
         public void StopTrain()
         {
-            training = false;
+            Training = false;
         }
 
-        #endregion
+#endregion
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        [NotifyPropertyChangedInvocator]
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
     }
 }
