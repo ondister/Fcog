@@ -1,0 +1,30 @@
+{
+  "Characters": [
+    {
+      "Index": 0,
+      "TextView": {
+        "Text": "+"
+      }
+    },
+    {
+      "Index": 1,
+      "TextView": {
+        "Text": "-"
+      }
+    },
+    {
+      "Index": 2,
+      "TextView": {
+        "Text": "#"
+      }
+    }
+  ],
+  "Id": "b16873e7-95c1-4af9-9b12-0ef85b128eb4",
+  "Name": "Mark machine",
+  "TrainResult": {
+    "EpochsCount": 22,
+    "Loss": 0.0071544643329047378,
+    "TestAccuracy": 1,
+    "TrainAccuracy": 1
+  }
+}
