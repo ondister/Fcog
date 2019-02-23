@@ -19,7 +19,7 @@ namespace Fcog.Controls.Wpf.Localization {
     // с помощью такого средства, как ResGen или Visual Studio.
     // Чтобы добавить или удалить член, измените файл .ResX и снова запустите ResGen
     // с параметром /str или перестройте свой проект VS.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class UI {
@@ -192,6 +192,42 @@ namespace Fcog.Controls.Wpf.Localization {
         public static string RemoveSing {
             get {
                 return ResourceManager.GetString("RemoveSing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Statistics.
+        /// </summary>
+        public static string StatisticsSign {
+            get {
+                return ResourceManager.GetString("StatisticsSign", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Test dataset.
+        /// </summary>
+        public static string TestDataSetSign {
+            get {
+                return ResourceManager.GetString("TestDataSetSign", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Total:.
+        /// </summary>
+        public static string TotalSign {
+            get {
+                return ResourceManager.GetString("TotalSign", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Train dataset.
+        /// </summary>
+        public static string TrainDataSetSign {
+            get {
+                return ResourceManager.GetString("TrainDataSetSign", resourceCulture);
             }
         }
         

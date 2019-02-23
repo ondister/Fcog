@@ -61,6 +61,42 @@ namespace Fcog.Core.Localization {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Count.
+        /// </summary>
+        public static string CharacterCountSign {
+            get {
+                return ResourceManager.GetString("CharacterCountSign", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Frequency.
+        /// </summary>
+        public static string CharacterFrequencySign {
+            get {
+                return ResourceManager.GetString("CharacterFrequencySign", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Index.
+        /// </summary>
+        public static string CharacterIndexSign {
+            get {
+                return ResourceManager.GetString("CharacterIndexSign", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Value.
+        /// </summary>
+        public static string CharacterValueSign {
+            get {
+                return ResourceManager.GetString("CharacterValueSign", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Check marks.
         /// </summary>
         public static string CheckMarkMachineSign {

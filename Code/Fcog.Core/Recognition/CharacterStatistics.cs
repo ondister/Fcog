@@ -17,7 +17,7 @@ namespace Fcog.Core.Recognition
 
         public override string ToString()
         {
-            return $"{Character.TextView.Text}: Freq: {Math.Round(Frequency, 3)} / Count {Count}";
+            return $"{Character.TextView.Text}: {Localization.CoreUI.CharacterFrequencySign}: {Math.Round(Frequency, 3)}, {Localization.CoreUI.CharacterCountSign}: {Count}";
         }
     }
 }

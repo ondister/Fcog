@@ -102,6 +102,9 @@
     <Compile Include="RecogQuestionnaire\QSelectWindow.xaml.cs">
       <DependentUpon>QSelectWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="TrainRecogMachine\DataSetsViewer.xaml.cs">
+      <DependentUpon>DataSetsViewer.xaml</DependentUpon>
+    </Compile>
     <Compile Include="TrainRecogMachine\RecogMachinesManager.xaml.cs">
       <DependentUpon>RecogMachinesManager.xaml</DependentUpon>
     </Compile>
@@ -143,6 +146,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="RecogQuestionnaire\QSelectWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="TrainRecogMachine\DataSetsViewer.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

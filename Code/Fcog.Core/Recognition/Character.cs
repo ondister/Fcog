@@ -48,7 +48,7 @@ namespace Fcog.Core.Recognition
 
         public override string ToString()
         {
-            return $"{Index}, {TextView}";
+            return $"{Localization.CoreUI.CharacterIndexSign}: {Index}, {Localization.CoreUI.CharacterValueSign}; {TextView}";
         }
     }
 }

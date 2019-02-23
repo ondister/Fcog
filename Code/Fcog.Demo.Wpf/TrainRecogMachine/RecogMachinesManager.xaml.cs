@@ -192,18 +192,9 @@ namespace Fcog.Demo.Wpf.TrainRecogMachine
             if (e.AddedItems[0] is RecogMachine machine)
             {
                 SelectedMachine = machine;
-                var testStatistics = SelectedMachine.DataSets.TestDataSet.GetStatistics();
-                var trainStatistics = SelectedMachine.DataSets.TrainDataSet.GetStatistics();
+               
+            }
 
-                ListBoxTestDatasetInfo.ItemsSource = testStatistics.CharactersStatistics;
-                ListBoxTrainDatasetInfo.ItemsSource = trainStatistics.CharactersStatistics;
-            }
-#warning костыль адский. переделать
-            else
-            {
-                ListBoxTestDatasetInfo.ItemsSource = null;
-                ListBoxTrainDatasetInfo.ItemsSource = null;
-            }
         }
 
 
@@ -269,6 +260,13 @@ namespace Fcog.Demo.Wpf.TrainRecogMachine
                 await RecogMachinesPool.Instance.SaveRecogMachineAsync(SelectedMachine);
                 MessageBox.Show($"{SelectedMachine.Name} was saved");
             }
+        }
+
+        private void ButtonViewDataSets_OnClick(object sender, RoutedEventArgs e)
+        {
+            var dataSetViewer = new DataSetsViewer {Owner = this};
+            dataSetViewer.LoadDataSets(SelectedMachine?.DataSets);
+            dataSetViewer.ShowDialog();
         }
     }
 }

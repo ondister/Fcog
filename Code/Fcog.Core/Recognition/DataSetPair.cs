@@ -1,19 +1,12 @@
 ﻿using System;
-using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
-using System.Net;
-using System.Runtime.InteropServices;
 
 namespace Fcog.Core.Recognition
 {
     public class DataSetPair
     {
-        public byte[] ImageBytes { get; }
-
-        public Character Character{ get; }
-
         public DataSetPair(byte[] imageBytes, Character character)
         {
             //check data size
@@ -27,34 +20,44 @@ namespace Fcog.Core.Recognition
             Character = character;
         }
 
+        public byte[] ImageBytes { get; }
+        public Bitmap Bitmap => ToBitmap(DataSet.ImageWidth, DataSet.ImageHeight, ImageBytes);
 
-        public  void Save(string folderName)
+        public int ImageHeight => DataSet.ImageHeight;
+
+        public int ImageWidth => DataSet.ImageWidth;
+
+        public Character Character { get; }
+
+
+        public void Save(string folderName)
         {
             const string imageExtension = ".jpg";
 
-            var directoryInfo= new DirectoryInfo(folderName);
+            var directoryInfo = new DirectoryInfo(folderName);
             if (!directoryInfo.Exists)
             {
                 Directory.CreateDirectory(folderName);
             }
 
-           if (Character != null)
+            if (Character != null)
             {
-                var fileName = Path.ChangeExtension( $"{folderName}{Path.DirectorySeparatorChar}{Character.TextView}_{Character.Index}_{Guid.NewGuid()}",imageExtension);
+                var fileName =
+                    Path.ChangeExtension(
+                        $"{folderName}{Path.DirectorySeparatorChar}{Character.TextView}_{Character.Index}_{Guid.NewGuid()}",
+                        imageExtension);
 
                 SaveBitmap(fileName, DataSet.ImageWidth, DataSet.ImageHeight, ImageBytes);
             }
-           
-
         }
 
-        private void SaveBitmap(string fileName, int width, int height, byte[] imageData)
+        private Bitmap ToBitmap(int width, int height, byte[] imageData)
         {
             const int imageDimention = 4; //RGB & Alfa Channels
-         
+
             var data = new byte[width * height * imageDimention];
 
-           var dataIndex = 0;
+            var dataIndex = 0;
 
             for (var index = 0; index < width * height; index++)
             {
@@ -70,16 +73,20 @@ namespace Fcog.Core.Recognition
             {
                 fixed (byte* ptr = data)
                 {
-
-                    using (var image = new Bitmap(width, height, width * imageDimention, PixelFormat.Format32bppRgb, new IntPtr(ptr)))
-                    {
-                       image.Save(fileName);
-                    }
+                    var image = new Bitmap(width, height, width * imageDimention, PixelFormat.Format32bppRgb,
+                        new IntPtr(ptr));
+                    return image;
                 }
             }
+        }
 
 
-
+        private void SaveBitmap(string fileName, int width, int height, byte[] imageData)
+        {
+            using (var image = ToBitmap(width, height, imageData))
+            {
+                image.Save(fileName);
+            }
         }
     }
 }

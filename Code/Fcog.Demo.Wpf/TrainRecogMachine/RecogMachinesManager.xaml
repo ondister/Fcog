@@ -25,13 +25,9 @@
                 <ListBox Name="ListBoxmachines" ItemsSource="{Binding ElementName=This, Path=Machines}"  SelectionChanged="ListBoxmachines_OnSelectionChanged"></ListBox>
             </GroupBox>
 
-            <GroupBox Header="Train Dataset" Grid.Row="1" MaxHeight="200">
-            <ListBox Name="ListBoxTrainDatasetInfo"></ListBox>
-            </GroupBox>
+           <Button Name="ButtonViewDataSets" Grid.Row="2" Margin="2" Click="ButtonViewDataSets_OnClick">View Datasets</Button>
 
-            <GroupBox Header="Test Dataset" Grid.Row="2" MaxHeight="200">
-                <ListBox Name="ListBoxTestDatasetInfo"></ListBox>
-            </GroupBox>
+          
 
             <GroupBox Header="MachineInfo" Grid.Row="3" >>
 

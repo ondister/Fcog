@@ -162,6 +162,18 @@
   <data name="RemoveSing" xml:space="preserve">
     <value>Remove</value>
   </data>
+  <data name="StatisticsSign" xml:space="preserve">
+    <value>Statistics</value>
+  </data>
+  <data name="TestDataSetSign" xml:space="preserve">
+    <value>Test dataset</value>
+  </data>
+  <data name="TotalSign" xml:space="preserve">
+    <value>Total:</value>
+  </data>
+  <data name="TrainDataSetSign" xml:space="preserve">
+    <value>Train dataset</value>
+  </data>
   <data name="VersionSign" xml:space="preserve">
     <value>Version</value>
   </data>

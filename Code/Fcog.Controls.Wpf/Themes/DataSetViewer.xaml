@@ -1,0 +1,61 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="clr-namespace:Fcog.Controls.Wpf.Recognition"
+    xmlns:loc="clr-namespace:Fcog.Controls.Wpf.Localization"
+    xmlns:recognition="clr-namespace:Fcog.Core.Recognition;assembly=Fcog.Core"
+    xmlns:wpf="clr-namespace:Fcog.Controls.Wpf">
+
+
+    <wpf:ImageToBitmapSourceConverter x:Key="ImageToBitmapSourceConverter" />
+   
+
+    <Style TargetType="{x:Type local:DataSetViewer}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type local:DataSetViewer}">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <GroupBox Name="GroupBoxstatistics" Header="{x:Static loc:UI.StatisticsSign}" Grid.Row="0">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+
+                                <StackPanel Orientation="Horizontal" Grid.Row="0">
+                                    <Label Content="{x:Static loc:UI.TotalSign}"/>
+                                    <Label Name="LabelTotalData"></Label>
+                                </StackPanel>
+
+                                <ListBox Name="ListBoxStatistics" Grid.Row="1" MaxHeight="200"  />
+                            </Grid>
+                        </GroupBox>
+
+                        <GroupBox Name="GroupBoxData" Header="Data" Grid.Row="1">
+                            <ListBox Name="ListBoxData" ScrollViewer.VerticalScrollBarVisibility="Disabled">
+
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate DataType="recognition:DataSetPair">
+                                        <StackPanel Orientation="Vertical" Margin="2">
+                                            <Image HorizontalAlignment="Center" Height="{Binding ImageHeight}" Width="{Binding ImageWidth}" Source="{Binding Bitmap, Converter={StaticResource ImageToBitmapSourceConverter}}"/>
+                                            <TextBlock HorizontalAlignment="Center"  Margin="1" Text="{Binding Character}"/>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+
+                                <ListBox.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <VirtualizingStackPanel  IsItemsHost="True" Orientation="Vertical"/>
+                                    </ItemsPanelTemplate>
+                                </ListBox.ItemsPanel>
+                            </ListBox>
+                        </GroupBox>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>

@@ -131,12 +131,8 @@
     <Compile Include="Questionnaire\WpfQProperties.xaml.cs">
       <DependentUpon>WpfQProperties.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Recognition\DataSetControl.xaml.cs">
-      <DependentUpon>DataSetControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Recognition\DataStatisticsControl.xaml.cs">
-      <DependentUpon>DataStatisticsControl.xaml</DependentUpon>
-    </Compile>
+    <Compile Include="Recognition\DataSetsViewer.cs" />
+    <Compile Include="Recognition\DataSetViewer.cs" />
   </ItemGroup>
   <ItemGroup>
     <Page Include="Forms\Cells\CheckCellControl.xaml">
@@ -187,11 +183,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Recognition\DataSetControl.xaml">
+    <Page Include="Themes\DataSetsViewer.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Recognition\DataStatisticsControl.xaml">
+    <Page Include="Themes\DataSetViewer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\Generic.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
