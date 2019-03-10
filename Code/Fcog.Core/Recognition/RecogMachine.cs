@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Threading;
 using System.Threading.Tasks;
 using Accord.Imaging.Filters;
 using ConvNetSharp.Core;
@@ -128,6 +130,7 @@ namespace Fcog.Core.Recognition
 
             return result;
         }
+
         public CellContent Recognize(Bitmap cellBitmap)
         {
             if (!Initialized)
@@ -299,9 +302,16 @@ namespace Fcog.Core.Recognition
             {
                 if (value == training) return;
                 training = value;
+                if (cancellationTokenSource != null && value == false) 
+                {
+                  cancellationTokenSource.Cancel();
+                }
+
                 OnPropertyChanged();
             }
         }
+
+        private CancellationTokenSource cancellationTokenSource; 
 
         public TrainResult TrainResult { get; internal set; }
 
@@ -310,6 +320,9 @@ namespace Fcog.Core.Recognition
 #warning сдедать проверку на инициализацию и наличие необходимого количества данных, совпадение данных и  символов машины
            TrainResult = new TrainResult();
            Training = true;
+
+            cancellationTokenSource= new CancellationTokenSource();
+            var token = cancellationTokenSource.Token;
 
             //reset net by create new
             CreateNet();
@@ -338,8 +351,6 @@ namespace Fcog.Core.Recognition
                       
                         TrainResult.TrainAccuracy = Math.Round(trainAccuracyBuffer.Items.Average(), 2);
 
-                      
-
 
 #endregion
 
@@ -360,12 +371,12 @@ namespace Fcog.Core.Recognition
                            StopTrain();
                         }
 
-                        if (!Training)
+                        if (cancellationTokenSource.IsCancellationRequested)
                         {
                             break;
                         }
                     }
-                });
+                }, token);
             }
         }
 
@@ -379,6 +390,11 @@ namespace Fcog.Core.Recognition
             }
 
             var prediction = ConvolutionNet.GetPrediction();
+
+            if (prediction == null)
+            {
+                throw new Exception();
+            }
 
             for (var i = 0; i < labels.Count; i++)
             {
